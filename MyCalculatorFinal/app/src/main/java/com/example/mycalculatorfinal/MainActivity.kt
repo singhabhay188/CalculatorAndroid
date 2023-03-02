@@ -41,44 +41,50 @@ class MainActivity : AppCompatActivity() {
 
         equal.setOnClickListener{
 
-            stfloat.clear();    stchar.clear()
-            var i = 0
-            while(i<infix.length){
-                var cchar:Char = infix[i]
-                if(cchar>='0' && cchar<='9'){
-                    var num:Int = cchar-'0'
-                    while(i<infix.length-1 && infix[i+1]>='0' && infix[i+1]<='9'){
-                        i++
-                        num=num*10+(infix[i]-'0')
-                    }
-                    stfloat.push(num.toFloat())
-                }
-                else if(cchar==')'){
-                    while(stchar.peek()!='('){
-                        performOperation(stfloat,stchar)
-                    }
-                    stchar.pop()
-                }
-                else{
-                    //^ / * + - (
-                    while(!stchar.isEmpty() && stchar.peek()!='(' && priority(stchar.peek())>=priority(cchar)){
-                        performOperation(stfloat,stchar)
-                    }
-                    stchar.push(cchar)
-                }
-                i++ //universal condition
+            if(isValid(infix)==false){
+                Toast.makeText(this,"Invalid Expression",Toast.LENGTH_SHORT).show()
             }
+            else {
+
+                stfloat.clear(); stchar.clear()
+                var i = 0
+                while (i < infix.length) {
+                    var cchar: Char = infix[i]
+                    if (cchar >= '0' && cchar <= '9') {
+                        var num: Int = cchar - '0'
+                        while (i < infix.length - 1 && infix[i + 1] >= '0' && infix[i + 1] <= '9') {
+                            i++
+                            num = num * 10 + (infix[i] - '0')
+                        }
+                        stfloat.push(num.toFloat())
+                    } else if (cchar == ')') {
+                        while (stchar.peek() != '(') {
+                            performOperation(stfloat, stchar)
+                        }
+                        stchar.pop()
+                    } else {
+                        //^ / * + - (
+                        while (!stchar.isEmpty() && stchar.peek() != '(' && priority(stchar.peek()) >= priority(
+                                cchar
+                            )
+                        ) {
+                            performOperation(stfloat, stchar)
+                        }
+                        stchar.push(cchar)
+                    }
+                    i++ //universal condition
+                }
 
 
-            while(!stchar.isEmpty())    performOperation(stfloat,stchar)
+                while (!stchar.isEmpty()) performOperation(stfloat, stchar)
 
-            //our final answer is at the top of the stack of float
-            if(stfloat.peek().toInt().toFloat()==stfloat.peek()){
-                infix=StringBuilder(stfloat.peek().toInt().toString())
+                //our final answer is at the top of the stack of float
+                if (stfloat.peek().toInt().toFloat() == stfloat.peek()) {
+                    infix = StringBuilder(stfloat.peek().toInt().toString())
+                } else infix = StringBuilder(stfloat.peek().toString())
+
+                output.text = infix.toString()
             }
-            else    infix=StringBuilder(stfloat.peek().toString())
-
-            output.text=infix.toString()
         }
         bracketopen.setOnClickListener{
             infix.append('(')
@@ -186,6 +192,32 @@ class MainActivity : AppCompatActivity() {
             '+'->stfloat.push(op1+op2)
             '-'->stfloat.push(op1-op2)
         }
+    }
+
+    private fun isValid(infix:StringBuilder):Boolean{
+        val n=infix.length;
+        if(infix.length==0 || infix[0]==')' || infix[n-1]=='(') return false;
+        val operator = arrayOf('+','-','*','/','^')
+        if(infix[0] in operator || infix[n-1] in operator) return false;
+
+        //now we need to iteratre over string to check all operators are correct or not
+        for(i in 0 until n){
+            if(infix[i] in operator){
+                if((infix[i-1] > '9' || infix[i-1]<'0') && infix[i-1]!=')')  return false;
+                if((infix[i+1] > '9' || infix[i+1]<'0') && infix[i+1]!='(')  return false;
+            }
+        }
+
+        //check if the brackets are correct or not
+        val tstack = Stack<Char>()
+        for(i in 0 until n){
+            if(infix[i]=='(')   tstack.push(infix[i])
+            else if(infix[i]==')'){
+                if(tstack.isEmpty())    return false;
+                else tstack.pop();
+            }
+        }
+        return tstack.isEmpty()
     }
 
     private fun priority(peek: Char): Int{

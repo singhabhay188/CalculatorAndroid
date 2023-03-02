@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         var stfloat = Stack<Float>()
         var stchar = Stack<Char>()
 
-        val infix = StringBuilder("")
+        var infix = StringBuilder("")
         //buttons
         val button0: Button = findViewById(R.id.button0)
         val button1: Button = findViewById(R.id.button1)
@@ -40,11 +40,18 @@ class MainActivity : AppCompatActivity() {
         val output:TextView = findViewById(R.id.textView)
 
         equal.setOnClickListener{
+
             stfloat.clear();    stchar.clear()
-            for(i in 0 until infix.length){
+            var i = 0
+            while(i<infix.length){
                 var cchar:Char = infix[i]
                 if(cchar>='0' && cchar<='9'){
-                    stfloat.push((cchar-'0').toFloat())
+                    var num:Int = cchar-'0'
+                    while(i<infix.length-1 && infix[i+1]>='0' && infix[i+1]<='9'){
+                        i++
+                        num=num*10+(infix[i]-'0')
+                    }
+                    stfloat.push(num.toFloat())
                 }
                 else if(cchar==')'){
                     while(stchar.peek()!='('){
@@ -59,15 +66,19 @@ class MainActivity : AppCompatActivity() {
                     }
                     stchar.push(cchar)
                 }
+                i++ //universal condition
             }
+
 
             while(!stchar.isEmpty())    performOperation(stfloat,stchar)
 
             //our final answer is at the top of the stack of float
             if(stfloat.peek().toInt().toFloat()==stfloat.peek()){
-                output.text=stfloat.peek().toInt().toString()
+                infix=StringBuilder(stfloat.peek().toInt().toString())
             }
-            else    output.text = stfloat.peek().toString()
+            else    infix=StringBuilder(stfloat.peek().toString())
+
+            output.text=infix.toString()
         }
         bracketopen.setOnClickListener{
             infix.append('(')

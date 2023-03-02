@@ -7,7 +7,10 @@ import android.widget.TextView
 import android.widget.Toast
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
+
+    private val operator = arrayOf<Char>('+','-','x','^','/');
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -45,38 +48,41 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this,"Invalid Expression",Toast.LENGTH_SHORT).show()
             }
             else {
-
-                stfloat.clear(); stchar.clear()
+                var isNegative=1
+                stfloat.clear();    stchar.clear()
                 var i = 0
-                while (i < infix.length) {
-                    var cchar: Char = infix[i]
-                    if (cchar >= '0' && cchar <= '9') {
-                        var num: Int = cchar - '0'
-                        while (i < infix.length - 1 && infix[i + 1] >= '0' && infix[i + 1] <= '9') {
+                while(i<infix.length){
+                    var cchar:Char = infix[i]
+                    if(cchar>='0' && cchar<='9'){
+                        var num:Int = cchar-'0'
+                        while(i<infix.length-1 && infix[i+1]>='0' && infix[i+1]<='9'){
                             i++
-                            num = num * 10 + (infix[i] - '0')
+                            num=num*10+(infix[i]-'0')
                         }
-                        stfloat.push(num.toFloat())
-                    } else if (cchar == ')') {
-                        while (stchar.peek() != '(') {
-                            performOperation(stfloat, stchar)
+                        stfloat.push(num.toFloat()*isNegative)
+                        isNegative=1    //after use reset it to 1 because the negative sign has been used.
+                    }
+                    else if(cchar==')'){
+                        while(stchar.peek()!='('){
+                            performOperation(stfloat,stchar)
                         }
                         stchar.pop()
-                    } else {
-                        //^ / * + - (
-                        while (!stchar.isEmpty() && stchar.peek() != '(' && priority(stchar.peek()) >= priority(
-                                cchar
-                            )
-                        ) {
-                            performOperation(stfloat, stchar)
+                    }
+                    else{
+                        //^ / x + - (
+                        if(cchar=='-' && infix[i-1] in operator){
+                            isNegative=-1;
                         }
-                        stchar.push(cchar)
+                        else{
+                            while (!stchar.isEmpty() && stchar.peek() != '(' && priority(stchar.peek()) >= priority(cchar)){
+                                performOperation(stfloat, stchar)
+                            }
+                            stchar.push(cchar)
+                        }
                     }
                     i++ //universal condition
                 }
-
-
-                while (!stchar.isEmpty()) performOperation(stfloat, stchar)
+                while(!stchar.isEmpty())    performOperation(stfloat,stchar)
 
                 //our final answer is at the top of the stack of float
                 if (stfloat.peek().toInt().toFloat() == stfloat.peek()) {
@@ -148,36 +154,38 @@ class MainActivity : AppCompatActivity() {
             infix.append('9')
             output.text=infix.toString()
         }
+        sub.setOnClickListener{
+            if(infix.length==0 || infix[infix.length-1]!='-') infix.append('-')
+            output.text=infix.toString()
+        }
+        mul.setOnClickListener{
+            infix.append('x')
+            output.text = infix.toString()
+        }
         add.setOnClickListener{
-            infix.append('+')
-            output.text=infix.toString()
-        }
-        sub.setOnClickListener{
-            infix.append('-')
+            if(infix.length>0 && infix[infix.length-1] !in operator){
+                infix.append('+')
+            }
             output.text=infix.toString()
         }
         mul.setOnClickListener{
-            infix.append('x')
-            output.text = infix.toString()
-        }
-        sub.setOnClickListener{
-            infix.append('-')
-            output.text = infix.toString()
-        }
-        mul.setOnClickListener{
-            infix.append('x')
+            if(infix.length>0 && infix[infix.length-1] !in operator){
+                infix.append('x')
+            }
             output.text=infix.toString()
         }
         divide.setOnClickListener{
-            infix.append('/')
+            if(infix.length>0 && infix[infix.length-1] !in operator){
+                infix.append('/')
+            }
             output.text=infix.toString()
         }
         power.setOnClickListener{
-            infix.append('^')
+            if(infix.length>0 && infix[infix.length-1] !in operator){
+                infix.append('^')
+            }
             output.text=infix.toString()
         }
-
-
     }
 
 
@@ -197,15 +205,24 @@ class MainActivity : AppCompatActivity() {
     private fun isValid(infix:StringBuilder):Boolean{
         val n=infix.length;
         if(infix.length==0 || infix[0]==')' || infix[n-1]=='(') return false;
-        val operator = arrayOf('+','-','*','/','^')
+        val operator = arrayOf('+','-','x','/','^')
         if(infix[0] in operator || infix[n-1] in operator) return false;
 
         //now we need to iteratre over string to check all operators are correct or not
         for(i in 0 until n){
             if(infix[i] in operator){
-                if((infix[i-1] > '9' || infix[i-1]<'0') && infix[i-1]!=')')  return false;
-                if((infix[i+1] > '9' || infix[i+1]<'0') && infix[i+1]!='(')  return false;
+                if(infix[i-1]=='(') return false;
+                if(infix[i+1]==')') return false;
+
+                if(infix[i]!='-' && infix[i-1] in operator) return false;
+                if(infix[i]=='-' && infix[i+1] in operator) return false;
             }
+        }
+
+        //handling exception like 24+56(24+56) when a open bracket in in middle of statement then there should be a operator
+        for(i in 1 until n-1){
+            if(infix[i]=='(' && infix[i-1] !in operator)   return false;
+            if(infix[i]==')' && (infix[i+1] !in operator))   return false;
         }
 
         //check if the brackets are correct or not
@@ -219,7 +236,6 @@ class MainActivity : AppCompatActivity() {
         }
         return tstack.isEmpty()
     }
-
     private fun priority(peek: Char): Int{
         when (peek) {
             '(' -> return 3

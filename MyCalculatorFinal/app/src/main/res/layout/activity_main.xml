@@ -22,12 +22,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/buttonbopen"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
 
-                android:text="(" />
 
             <Button
                 android:id="@+id/buttonpower"
@@ -53,6 +48,12 @@
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:text="3" />
+            <Button
+                android:id="@+id/buttonbopen"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+
+                android:text="(" />
 
         </LinearLayout>
 
@@ -63,17 +64,11 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/buttonbclose"
+                android:id="@+id/buttonclr"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
 
-                android:text=")" />
-
-            <Button
-                android:id="@+id/buttondivide"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:text="/" />
+                android:text="clr" />
 
             <Button
                 android:id="@+id/button8"
@@ -93,6 +88,12 @@
                 android:layout_height="75dp"
                 android:text="2" />
 
+            <Button
+                android:id="@+id/button0"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:text="0" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -107,12 +108,6 @@
                 android:layout_height="75dp"
 
                 android:text="del" />
-
-            <Button
-                android:id="@+id/buttonmul"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:text="x" />
 
             <Button
                 android:id="@+id/button7"
@@ -132,6 +127,13 @@
                 android:layout_height="75dp"
                 android:text="1" />
 
+            <Button
+                android:id="@+id/buttonbclose"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+
+                android:text=")" />
+
         </LinearLayout>
 
 
@@ -141,19 +143,24 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
-            <Button
-                android:id="@+id/buttonclr"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-
-                android:text="clr" />
-
             <Button
                 android:id="@+id/buttoneq"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:text="=" />
+
+
+            <Button
+            android:id="@+id/buttondivide"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:text="/" />
+
+            <Button
+                android:id="@+id/buttonmul"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:text="x"/>
 
 
             <Button
@@ -168,11 +175,8 @@
                 android:layout_height="75dp"
                 android:text="-" />
 
-            <Button
-                android:id="@+id/button0"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-                android:text="0" />
+
+
 
 
         </LinearLayout>

@@ -6,10 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:src="@drawable/icon"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="320dp"
-        android:layout_height="400dp"
+        android:layout_height="380dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,13 +32,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
-
             <Button
                 android:id="@+id/buttonpower"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-
+                android:backgroundTint="#FF5722"
                 android:text="^" />
 
             <Button
@@ -48,11 +56,12 @@
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:text="3" />
+
             <Button
                 android:id="@+id/buttonbopen"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-
+                android:backgroundTint="#FF5722"
                 android:text="(" />
 
         </LinearLayout>
@@ -67,7 +76,7 @@
                 android:id="@+id/buttonclr"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-
+                android:backgroundTint="@color/viva_magenta"
                 android:text="clr" />
 
             <Button
@@ -106,7 +115,7 @@
                 android:id="@+id/buttondel"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-
+                android:backgroundTint="@color/viva_magenta"
                 android:text="del" />
 
             <Button
@@ -131,7 +140,7 @@
                 android:id="@+id/buttonbclose"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-
+                android:backgroundTint="#FF5722"
                 android:text=")" />
 
         </LinearLayout>
@@ -147,36 +156,38 @@
                 android:id="@+id/buttoneq"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
+                android:backgroundTint="@color/viva_magenta"
                 android:text="=" />
 
 
             <Button
-            android:id="@+id/buttondivide"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:text="/" />
+                android:id="@+id/buttondivide"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:backgroundTint="#FF5722"
+                android:text="/" />
 
             <Button
                 android:id="@+id/buttonmul"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
-                android:text="x"/>
+                android:backgroundTint="#FF5722"
+                android:text="x" />
 
 
             <Button
                 android:id="@+id/buttonadd"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
+                android:backgroundTint="#FF5722"
                 android:text="+" />
 
             <Button
                 android:id="@+id/buttonsub"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
+                android:backgroundTint="#FF5722"
                 android:text="-" />
-
-
-
 
 
         </LinearLayout>
@@ -187,27 +198,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="60dp"
-        android:textSize="18dp"
         android:text="Hello !!"
         android:textColor="@color/viva_magenta"
+        android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:text="@string/title"
-        android:textColor="@color/viva_magenta"
-        android:textSize="27dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

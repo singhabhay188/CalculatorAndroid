@@ -43,8 +43,7 @@ class MainActivity : AppCompatActivity(){
         val output:TextView = findViewById(R.id.textView)
 
         equal.setOnClickListener{
-
-            if(isValid(infix)==false){
+            if(!isValid(infix)){
                 Toast.makeText(this,"Invalid Expression",Toast.LENGTH_SHORT).show()
             }
             else {
@@ -70,9 +69,8 @@ class MainActivity : AppCompatActivity(){
                     }
                     else{
                         //^ / x + - (
-                        if(cchar=='-' && infix[i-1] in operator){
-                            isNegative=-1;
-                        }
+                        if(cchar=='-' && i==0)  isNegative=-1;
+                        else if(cchar=='-' && infix[i-1] in operator)   isNegative=-1
                         else{
                             while (!stchar.isEmpty() && stchar.peek() != '(' && priority(stchar.peek()) >= priority(cchar)){
                                 performOperation(stfloat, stchar)
@@ -187,8 +185,6 @@ class MainActivity : AppCompatActivity(){
             output.text=infix.toString()
         }
     }
-
-
     private fun performOperation(stfloat: Stack<Float>, stchar:Stack<Char>){
         var op2=stfloat.pop()
         var op1=stfloat.pop()
@@ -206,25 +202,20 @@ class MainActivity : AppCompatActivity(){
         val n=infix.length;
         if(infix.length==0 || infix[0]==')' || infix[n-1]=='(') return false;
         val operator = arrayOf('+','-','x','/','^')
-        if(infix[0] in operator || infix[n-1] in operator) return false;
+        if(infix[n-1] in operator) return false;
 
         //now we need to iteratre over string to check all operators are correct or not
         for(i in 0 until n){
             if(infix[i] in operator){
-                if(infix[i-1]=='(') return false;
+                if(infix[i]!='-' && infix[i-1]=='(') return false;
                 if(infix[i+1]==')') return false;
-
-                if(infix[i]!='-' && infix[i-1] in operator) return false;
-                if(infix[i]=='-' && infix[i+1] in operator) return false;
             }
         }
-
         //handling exception like 24+56(24+56) when a open bracket in in middle of statement then there should be a operator
         for(i in 1 until n-1){
             if(infix[i]=='(' && infix[i-1] !in operator)   return false;
             if(infix[i]==')' && (infix[i+1] !in operator))   return false;
         }
-
         //check if the brackets are correct or not
         val tstack = Stack<Char>()
         for(i in 0 until n){
